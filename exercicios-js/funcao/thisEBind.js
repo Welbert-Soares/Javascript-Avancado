@@ -7,7 +7,7 @@ const pessoa = {
 
 pessoa.falar();
 const falar = pessoa.falar;
-falar() //conflito entre paradigmas: funcional e OO
+falar(); //conflito entre paradigmas: funcional e OO
 
-const falarDePessoa = pessoa.falar.bind(pessoa)
-falarDePessoa()
+const falarDePessoa = pessoa.falar.bind(pessoa);
+falarDePessoa();
