@@ -7,3 +7,9 @@ const sequencia = {
         }
     }
 }
+
+console.log(sequencia.valor, sequencia.valor) // 1 2
+sequencia.valor = 1000
+console.log(sequencia.valor, sequencia.valor) // 1000 1001
+sequencia.valor = 900
+console.log(sequencia.valor, sequencia.valor) // 1002 1003
