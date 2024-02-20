@@ -1,5 +1,7 @@
 <h1>Formulário</h1>
-<form action="http://localhost:3003/usuarios" method="post">
+
+<form method="post">
+    <input type="hidden" name="id" value="3">
     <input type="text" name="nome" placeholder="Nome">
     <input type="password" name="senha" placeholder="Senha">
     <textarea name="bio" cols="30" rows="10" placeholder="sobre você:"></textarea>
@@ -26,13 +28,17 @@
         <option value="go">GO</option>
         <option value="c">C</option>
     </select>
-    <button>Incluir</button>
+    <button formaction="http://localhost:3003/usuarios">Incluir</button>
+    <button formaction="http://localhost:3003/usuarios/3">Alterar</button>
 </form>
 <style>
-    input, textarea, select {
+    input,
+    textarea,
+    select {
         display: block;
         margin-bottom: 10px;
     }
+
     input[type=radio],
     input[type=checkbox] {
         display: inline;
