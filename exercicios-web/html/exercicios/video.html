@@ -1,4 +1,4 @@
-<video id="meuVideo" width="800" height="450" controls autoplay controlsList="nodownload" >
+<video id="meuVideo" width="800" height="450" controls autoplay controlsList="nodownload">
     <source src="http://files.cod3r.com.br/curso-web/video.mp4" type="video/mp4">
     Seu browser não suporta a tag de vídeo.
 </video>
@@ -7,27 +7,71 @@
     <div></div>
 </div>
 
-<div>
+<div class="buttons">
     <button wm-play="meuVideo">Play</button>
     <button wm-pause="meuVideo">Pause</button>
 </div>
 
 <style>
     .progresso {
-        width: 500px;
+        width: 800px;
         height: 20px;
-        border: solid 1px #444;
-        margin: 10px;
+        border: solid 2px #444;
+        border-radius: 30px;
+        margin: 5px 0px ;
     }
 
     .progresso div {
-        background-color: #007bff;
+        background-color: lightseagreen;
         color: #fff;
-        height: 100%;
+        height: 97%;
         text-align: right;
-        font-size: 14px;
+        font-weight: bold;
+        font-size: 13px;
         width: 0%;
+        border-radius: 30px;
     }
+
+    [wm-play] {
+        background-color: lightgreen;
+        color: #000;
+        font-weight: bold;
+        border-radius: 20px;
+    }
+
+    [wm-pause] {
+        background-color: lightcoral;
+        color: #000;
+        font-weight: bold;
+        border-radius: 20px;
+    }
+
+    .buttons {
+        display: flex;
+        justify-content: center;
+        width: 800px;
+        gap: 10px; /* Add this line to create a small space between elements */
+    }
+
 </style>
 
+<script>
+    function configurarVideo (id) {
+        const video = document.getElementById(id)
+        video.oncontextmenu = () => false
 
+        document.querySelector(`[wm-play=${id}]`).onclick = e => video.play()
+
+        document.querySelector(`[wm-pause=${id}]`).onclick = e => video.pause()
+
+        setInterval(() => {
+            const percentual = (video.currentTime / video.duration) * 100
+            const valorDiv = document.querySelector(`[wm-progresso=${id}] > div`)
+            valorDiv.style.width = `${percentual}%`
+            valorDiv.innerHTML = `${percentual.toFixed(1)}%`
+        }, 500)
+    }
+
+    configurarVideo('meuVideo')
+    
+</script>
