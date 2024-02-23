@@ -6,7 +6,28 @@
     <title>CSS Selectors</title>
     <link rel="stylesheet" href="css/tag.css">
     <style>
-        /* ... */
+        /*
+            #aprovados - id
+            .tag - class
+            #aninhado > div - filho direto
+            #aninhado section - descendente
+            p + ul - irmão adjacente
+            p ~ ul - irmão geral
+            [feira] - atributo
+            [feira~=escritorio] - atributo com valor
+            [feira*=casa] - atributo com valor contendo 
+            span:nth-child(1) - span irmão na primeira posição
+            span:nth-child(odd) - span irmão em posição ímpar
+            span:nth-child(even) - span irmão em posição par
+            section.nolabel - classe nolabel
+            section > :nth-child(odd), ul, p - filho ímpar, ul, p
+            section > span:nth-of-type(2) - filho span na segunda posição
+         */
+         section > span:nth-of-type(2) {
+            color: #ff0;
+            background-color: #f77;
+
+        }
     </style>
 </head>
 
@@ -29,7 +50,7 @@
             </ol>
             <div id='aninhado' class='tag'>
                 <div class="tag">
-                    <section class='tag'>
+                    <section class='tag nolabel'>
                         <span class='tag'>1</span>
                         <p class='tag'>2</p>
                         <span class='tag'>3</span>
