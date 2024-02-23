@@ -5,7 +5,33 @@
     <meta charset="UTF-8">
     <title>Especificidade CSS</title>
     <style>
-        /* https://developer.mozilla.org/pt-BR/docs/Web/CSS/Specificity */
+        /* https://developer.mozilla.org/pt-BR/docs/Web/CSS/Specificity 
+        
+        Em linhas gerais...
+
+        1. Regras !important
+        2. Regras inline
+                seletores mais específicos
+        3. ID
+        4. Classes, atributos e pseudo-classes
+        5. Elementos e pseudo-elementos
+        */
+
+        p {
+            background-color: #aaa;
+        }
+
+        .observacao {
+            background-color: #f77;
+            border: dashed 5px;
+            padding: 200px !important; /* !important */
+            font-size: 40px;
+        }
+
+        p.observacao {
+            padding: 2px;
+            background: linear-gradient(to right, #c0e6f3, #0379a0);
+        }
     </style>
 </head>
 
