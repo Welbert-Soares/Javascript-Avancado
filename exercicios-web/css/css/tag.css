@@ -11,6 +11,11 @@ li {
   margin-left: 60px;
 }
 
+.tag {
+  border: solid 4px;
+  margin: 5px;
+}
+
 .tag label {
   color: #fff;
   font-size: 25px;
