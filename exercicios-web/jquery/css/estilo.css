@@ -44,13 +44,14 @@ li {
 
 .exercicio div {
     font-size: 1.8em;
-    border: solid 5px #fff;
+    border: solid 3px #fff;
+    border-radius: 25px;
     padding: 0px 40px;
     margin: 10px;
 }
 
 .exercicio div:nth-of-type(1) {
-    background-color: darkgoldenrod;
+    background-color: darkslategray;
 }
 
 .exercicio div:nth-of-type(2) {
