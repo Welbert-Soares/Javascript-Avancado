@@ -78,7 +78,7 @@ function Barreiras(altura, largura, abertura, espaco, notificarPonto) {
 function Passaro(alturaJogo) {
   let voando = false;
   let velocidade = 0;
-  let aceleracao =0;
+  let aceleracao = 0;
 
   this.elemento = novoElemento("img", "passaro");
   this.elemento.src = "imgs/passaro.png";
@@ -89,15 +89,17 @@ function Passaro(alturaJogo) {
   window.onkeydown = (e) => {
     voando = true;
     velocidade = 5; // Ajuste este valor conforme necessário
-    aceleracao = 0.1; // Ajuste este valor conforme necessário
-};
+    aceleracao = 0.3; // Ajuste este valor conforme necessário
+  };
   window.onkeyup = (e) => {
     voando = false;
     aceleracao = 0;
   };
 
   this.animar = () => {
-    if (!voando) {
+    if (voando) {
+      velocidade += aceleracao;
+    } else {
       velocidade -= 0.5; // Ajuste este valor conforme necessário
     }
 
