@@ -14,38 +14,65 @@
         .esquerda {
             height: 100vh;
             width: 50%;
-            background-color: coral;
+            background-color: rgb(44, 114, 146);
+            border-right: solid 2.5px black;
         }
         
         .direita {
             height: 100vh;
             width: 50%;
-            background-color: cornflowerblue;
+            background-color: rgb(199, 77, 77);
+            border-left: solid 2.5px black;
         }
         
         .item {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
             border: solid 5px black;
+            border-radius: 25px;
             background-color: darkgrey;
             color: white;
             height: 100px;
             font-size: 40px;
             margin: 10px;
-            vertical-align: middle;
-            text-align: center;
+        }
+
+        .item:hover {
+            opacity: 0.7;
         }
     </style>
 </head>
 
 <body>
-    <div class="esquerda" wm-dropzone>
+    <div class="esquerda" div-dropzone>
         <div class="item">1</div>
         <div class="item">2</div>
         <div class="item">3</div>
         <div class="item">4</div>
     </div>
-    <div class="direita" wm-dropzone></div>
+    <div class="direita" div-dropzone></div>
     <script>
-        // ...
+        const items = document.querySelectorAll('[div-dropzone] .item')
+        items.forEach((item, index) => {
+            item.draggable = true
+            item.id = item.id || `draggable-item-${index}`
+            item.ondragstart = e => 
+                e.dataTransfer.setData('item-id', e.target.id)
+        })
+
+        const dropzones = document.querySelectorAll('[div-dropzone]')
+        dropzones.forEach(dropzone => {
+            dropzone.ondragover = e => e.preventDefault()
+            dropzone.ondrop = function(e) {
+                const id = e.dataTransfer.getData('item-id')
+                const item = document.getElementById(id)
+                //e.target.appendChild(item)
+                dropzone.appendChild(item)
+            }
+        })
+
     </script>
 </body>
 
