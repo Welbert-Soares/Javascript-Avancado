@@ -15,6 +15,7 @@ function Barreira(reversa = false) {
     this.setAltura = altura => corpo.style.height = `${altura}px`
 }
 
+// teste 1
 // const b = new Barreira(true)
 // b.setAltura(300)
 // document.querySelector('[div-flappy]').appendChild(b.elemento)
@@ -43,5 +44,42 @@ function ParDeBarreiras(altura, abertura, x) {
     this.setX(x)
 }
 
-const b = new ParDeBarreiras(700, 200, 400)
-document.querySelector('[div-flappy]').appendChild(b.elemento)
+// teste 2
+// const b = new ParDeBarreiras(700, 200, 400)
+// document.querySelector('[div-flappy]').appendChild(b.elemento)
+
+function Barreiras(altura, largura, abertura, espaco, notificarPonto) {
+    this.pares = [
+        new ParDeBarreiras(altura, abertura, largura),
+        new ParDeBarreiras(altura, abertura, largura + espaco),
+        new ParDeBarreiras(altura, abertura, largura + espaco * 2),
+        new ParDeBarreiras(altura, abertura, largura + espaco * 3)
+    ]
+
+    const deslocamento = 3
+    this.animar = () => {
+        this.pares.forEach(par => {
+            par.setX(par.getX() - deslocamento)
+
+            // quando o elemento sair da área do jogo
+            if (par.getX() < -par.getLargura()) {
+                par.setX(par.getX() + espaco * this.pares.length)
+                par.sortearAbertura()
+            }
+
+            const meio = largura / 2 
+            const cruzouOMeio = par.getX() + deslocamento >= meio
+                && par.getX() < meio
+            if (cruzouOMeio) notificarPonto() 
+        }) 
+    }     
+}
+
+// teste 3
+const barreiras = new Barreiras(700, 1200, 200, 400)
+const areaDoJogo = document.querySelector('[div-flappy]')
+barreiras.pares.forEach(par => areaDoJogo.appendChild(par.elemento))
+
+setInterval(() => {
+    barreiras.animar()
+}, 20)
