@@ -183,6 +183,12 @@ function FlappyBird() {
 
             if (colidiu(passaro, barreiras)) {
                 clearInterval(temporizador)
+
+                // Limpa a área do jogo
+                areaDoJogo.innerHTML = ''
+
+                // Reinicia o jogo após 3 segundos
+                setTimeout(() => new FlappyBird().start(), 3000)
             }
         }, 20)
     }
