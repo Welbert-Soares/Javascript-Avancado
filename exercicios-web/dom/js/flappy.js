@@ -76,44 +76,47 @@ function Barreiras(altura, largura, abertura, espaco, notificarPonto) {
 }
 
 function Passaro(alturaJogo) {
-    let voando = false;
-    let velocidade = 0;
-  
-    this.elemento = novoElemento("img", "passaro");
-    this.elemento.src = "imgs/passaro.png";
-  
-    this.getY = () => parseInt(this.elemento.style.bottom.split("px")[0]);
-    this.setY = (y) => (this.elemento.style.bottom = `${y}px`);
-  
-    window.onkeydown = (e) => {
-      voando = true;
-      velocidade = 6; // Ajuste este valor conforme necessário
-    };
-    window.onkeyup = (e) => {
-      voando = false;
-    };
-  
-    this.animar = () => {
-      if (!voando) {
-        velocidade -= 0.5; // Ajuste este valor conforme necessário
-      }
-  
-      const novoY = this.getY() + velocidade;
-      const alturaMaxima = alturaJogo - this.elemento.clientHeight;
-  
-      if (novoY <= 0) {
-        this.setY(0);
-        velocidade = 0;
-      } else if (novoY >= alturaMaxima) {
-        this.setY(alturaMaxima);
-        velocidade = 0;
-      } else {
-        this.setY(novoY);
-      }
-    };
-  
-    this.setY(alturaJogo / 2);
-  }
+  let voando = false;
+  let velocidade = 0;
+  let aceleracao =0;
+
+  this.elemento = novoElemento("img", "passaro");
+  this.elemento.src = "imgs/passaro.png";
+
+  this.getY = () => parseInt(this.elemento.style.bottom.split("px")[0]);
+  this.setY = (y) => (this.elemento.style.bottom = `${y}px`);
+
+  window.onkeydown = (e) => {
+    voando = true;
+    velocidade = 5; // Ajuste este valor conforme necessário
+    aceleracao = 0.1; // Ajuste este valor conforme necessário
+};
+  window.onkeyup = (e) => {
+    voando = false;
+    aceleracao = 0;
+  };
+
+  this.animar = () => {
+    if (!voando) {
+      velocidade -= 0.5; // Ajuste este valor conforme necessário
+    }
+
+    const novoY = this.getY() + velocidade;
+    const alturaMaxima = alturaJogo - this.elemento.clientHeight;
+
+    if (novoY <= 0) {
+      this.setY(0);
+      velocidade = 0;
+    } else if (novoY >= alturaMaxima) {
+      this.setY(alturaMaxima);
+      velocidade = 0;
+    } else {
+      this.setY(novoY);
+    }
+  };
+
+  this.setY(alturaJogo / 2);
+}
 
 // teste 3
 //  const barreiras = new Barreiras(700, 1200, 200, 400)
@@ -146,52 +149,80 @@ function estaoSobrepostos(elementoA, elementoB) {
 }
 
 function colidiu(passaro, barreiras) {
-    let colidiu = false;
-    barreiras.pares.forEach((parDeBarreiras) => {
-        if (!colidiu) {
-        const superior = parDeBarreiras.superior.elemento;
-        const inferior = parDeBarreiras.inferior.elemento;
-        colidiu =
-            estaoSobrepostos(passaro.elemento, superior) ||
-            estaoSobrepostos(passaro.elemento, inferior);
-        }
-    });
-    return colidiu;
+  let colidiu = false;
+  barreiras.pares.forEach((parDeBarreiras) => {
+    if (!colidiu) {
+      const superior = parDeBarreiras.superior.elemento;
+      const inferior = parDeBarreiras.inferior.elemento;
+      colidiu =
+        estaoSobrepostos(passaro.elemento, superior) ||
+        estaoSobrepostos(passaro.elemento, inferior);
     }
-
-function FlappyBird() {
-    let pontos = 0
-
-    const areaDoJogo = document.querySelector('[div-flappy]')
-    const altura = areaDoJogo.clientHeight
-    const largura = areaDoJogo.clientWidth
-
-    const progresso = new Progresso()
-    const barreiras = new Barreiras(altura, largura, 200, 400,
-         () => progresso.atualizarPontos(++pontos))
-    const passaro = new Passaro(altura)
-
-    areaDoJogo.appendChild(progresso.elemento)
-    areaDoJogo.appendChild(passaro.elemento)
-    barreiras.pares.forEach(par => areaDoJogo.appendChild(par.elemento))
-
-    this.start = () => {
-        // loop do jogo
-        const temporizador = setInterval(() => {
-            barreiras.animar()
-            passaro.animar()
-
-            if (colidiu(passaro, barreiras)) {
-                clearInterval(temporizador)
-
-                // Limpa a área do jogo
-                areaDoJogo.innerHTML = ''
-
-                // Reinicia o jogo após 3 segundos
-                setTimeout(() => new FlappyBird().start(), 3000)
-            }
-        }, 20)
-    }
+  });
+  return colidiu;
 }
 
-new FlappyBird().start()
+function FlappyBird() {
+  let pontos = 0;
+  let speedFactor = 1;
+
+  const areaDoJogo = document.querySelector("[div-flappy]");
+  const altura = areaDoJogo.clientHeight;
+  const largura = areaDoJogo.clientWidth;
+
+  const progresso = new Progresso();
+  const barreiras = new Barreiras(altura, largura, 200, 400, () => {
+    progresso.atualizarPontos(++pontos);
+    speedFactor += 0.01; // Aumenta o fator de velocidade
+  });
+  const passaro = new Passaro(altura);
+
+  areaDoJogo.appendChild(progresso.elemento);
+  areaDoJogo.appendChild(passaro.elemento);
+  barreiras.pares.forEach((par) => areaDoJogo.appendChild(par.elemento));
+
+  this.start = () => {
+    // loop do jogo
+    const temporizador = setInterval(() => {
+      barreiras.animar();
+      passaro.animar();
+
+      if (colidiu(passaro, barreiras)) {
+        clearInterval(temporizador);
+
+        // Limpa a área do jogo
+        areaDoJogo.innerHTML = "";
+
+        // Cria um botão de reinício
+        const restartButton = document.createElement("button");
+        restartButton.innerText = "Reiniciar";
+        restartButton.className = "restart-button";
+        restartButton.addEventListener("click", () => {
+          // Inicia a contagem regressiva
+          let countdown = 3;
+          const countdownInterval = setInterval(() => {
+            if (countdown > 0) {
+              // Atualiza o texto do botão para mostrar a contagem regressiva
+              restartButton.innerText = `Reiniciando em ${countdown}...`;
+              countdown--;
+            } else {
+              // Limpa a contagem regressiva
+              clearInterval(countdownInterval);
+
+              // Remove o botão de reinício
+              areaDoJogo.removeChild(restartButton);
+
+              // Inicia um novo jogo
+              new FlappyBird().start();
+            }
+          }, 1000);
+        });
+
+        // Adiciona o botão de reinício à área do jogo
+        areaDoJogo.appendChild(restartButton);
+      }
+    }, 20);
+  };
+}
+
+new FlappyBird().start();
