@@ -8,7 +8,7 @@ app.use(bodyParser.urlencoded({ extended: true })) // Para interpretar os dados 
 
 app.use(bodyParser.json()) // Para interpretar os dados do formulário
 
-app.get('/teste'), (req, res) => res.send('OK') // Rota de teste
+app.get('/teste', (req, res) => res.send(new Date)) // Rota de teste
 
 app.listen(8080, () => console.log('Executando...')) // Porta de execução
 
